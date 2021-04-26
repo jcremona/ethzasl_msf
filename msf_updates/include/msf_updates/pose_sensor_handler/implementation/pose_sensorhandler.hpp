@@ -71,9 +71,11 @@ PoseSensorHandler<MEASUREMENT_TYPE, MANAGER_TYPE>::PoseSensorHandler(
       nh.subscribe < geometry_msgs::PoseWithCovarianceStamped
           > ("pose_with_covariance_input", 20, &PoseSensorHandler::MeasurementCallback, this);
   subTransformStamped_ = nh.subscribe < geometry_msgs::TransformStamped
-      > ("transform_input", 20, &PoseSensorHandler::MeasurementCallback, this);
+      > ("pose_transform_input", 20, &PoseSensorHandler::MeasurementCallback, this);
   subPoseStamped_ = nh.subscribe < geometry_msgs::PoseStamped
       > ("pose_input", 20, &PoseSensorHandler::MeasurementCallback, this);
+  subOdom_ = nh.subscribe < nav_msgs::Odometry
+      > ("odometry_input", 20, &PoseSensorHandler::MeasurementCallback, this);
 
   z_p_.setZero();
   z_q_.setIdentity();
@@ -260,5 +262,30 @@ void PoseSensorHandler<MEASUREMENT_TYPE, MANAGER_TYPE>::MeasurementCallback(
 
   ProcessPoseMeasurement(pose);
 }
+
+
+template<typename MEASUREMENT_TYPE, typename MANAGER_TYPE>
+void PoseSensorHandler<MEASUREMENT_TYPE, MANAGER_TYPE>::MeasurementCallback(
+        const nav_msgs::OdometryConstPtr & msg) {
+    this->SequenceWatchDog(msg->header.seq, subOdom_.getTopic());
+    MSF_INFO_STREAM_ONCE(
+            "*** pose sensor got first measurement from topic "
+                    << this->topic_namespace_ << "/" << subOdom_.getTopic()
+                    << " ***");
+
+    geometry_msgs::PoseWithCovarianceStampedPtr pose(
+            new geometry_msgs::PoseWithCovarianceStamped());
+
+    // TODO Check MeasurementCallback(geometry_msgs::TransformStampedConstPtr & msg).
+    // Maybe a timestamp correction is needed
+
+    pose->header = msg->header;
+    pose->pose = msg->pose;
+
+    ProcessPoseMeasurement(pose);
+}
+
+
+
 }  // namespace msf_pose_sensor
 #endif  // POSE_SENSORHANDLER_HPP_

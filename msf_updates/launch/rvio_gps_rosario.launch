@@ -1,0 +1,14 @@
+<launch>
+    <param name="/use_sim_time" value="true"/>
+    <node name="msf_position_pose_sensor" pkg="msf_updates" type="position_pose_sensor" clear_params="true" output="screen">
+
+<!-- 		<remap from="msf_core/hl_state_input" to="/fcu/ekf_state_out" /> -->
+<!-- 		<remap from="msf_core/correction" to="/fcu/ekf_state_in" /> -->
+<!--     <node pkg="rosservice" type="rosservice" name="initialize" args="call - -wait /msf_viconpos_sensor/pose_sensor/initialize_msf_scale 1"/> -->
+		<remap from="/msf_core/imu_state_input" to="/imu"  />
+		<remap from="msf_updates/pose_input" to="/rvio/posestamped" />
+		<remap from="msf_updates/navsatfix_input" to="/gps/fix" />
+		<rosparam file="$(find msf_updates)/position_pose_sensor_rosario.yaml"/>
+    </node>
+    <node pkg="rosservice" type="rosservice" name="initialize" args="call --wait /msf_position_pose_sensor/position_pose_sensor/core_init_filter 1"/>
+</launch>

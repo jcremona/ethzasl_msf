@@ -9,7 +9,7 @@
         <!--remap from="msf_updates/position_input" to="/leica/position" /--> <!--LEICA-->
         <!--remap from="msf_updates/navsatfix_input" to="/auk/fcu/gps" /-->  <!--GPS-->
 	    	
-        <!--remap from="msf_updates/transform_input" to="vicon/auk/auk" /--> <!--VICON-->
+        <!--remap from="msf_updates/position_transform_input" to="vicon/auk/auk" /--> <!--VICON-->
                     
         <!--remap from="msf_updates/pose_with_covariance_input" to="/bluebird/down/vslam/pose" /-->  <!--BLUEBIRD-->
         <!--remap from="msf_updates/pose_with_covariance_input" to="/auk/down/vslam/pose" /--> <!--AUK-->
