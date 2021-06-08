@@ -10,5 +10,5 @@
 		<remap from="msf_updates/position_transform_input" to="/vicon/firefly_sbx/firefly_sbx" />
 		<rosparam file="$(find msf_updates)/position_pose_sensor_euroc.yaml"/>
     </node>
-
+    <node pkg="rosservice" type="rosservice" name="initialize" args="call --wait /msf_position_pose_sensor/position_pose_sensor/set_parameters 'config: {bools: [{name: 'core_init_filter', value: True}]}'"/>
 </launch>

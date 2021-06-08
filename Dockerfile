@@ -13,6 +13,7 @@ RUN apt-get update && \
 #RUN git clone https://github.com/ethz-asl/ethzasl_msf.git $CATKIN_WS/src/ethzasl_msf 
 
 COPY ./ $CATKIN_WS/src/ethzasl_msf 
+COPY ./scripts/ $CATKIN_WS
 
-RUN ["/bin/bash", "-c", ". /opt/ros/melodic/setup.bash && catkin_make"]
+RUN ["/bin/bash", "-c", "chmod +x build.sh && chmod +x modify_entrypoint.sh && sync && ./build.sh && ./modify_entrypoint.sh"]
 

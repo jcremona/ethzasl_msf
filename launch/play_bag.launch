@@ -1,0 +1,37 @@
+<launch>
+  <param name="/use_sim_time" value="true"/>
+  
+  <arg name="vo_type"/>
+  <arg name="vo_topic"/>
+  <arg name="bagfile"/>
+  <arg name="save_to_file" default="true"/>
+  <arg name="vo_output_file" default="vo_trajectory.txt"/>
+  <arg name="msf_odom_output_file" default="msf_odom_trajectory.txt"/>
+  <arg name="msf_pose_after_upd_output_file" default="msf_after_upd_trajectory.txt"/>
+
+  <node pkg="pose_listener" type="pose_listener"
+        name="pose_listener_odom" clear_params="true" output="log" required="true" if="$(eval save_to_file)">
+    <param name="type" value="O"/>
+    <param name="topic" value="/msf_core/odometry"/>
+    <param name="output_file" value="$(arg msf_odom_output_file)"/>
+  </node>
+
+  <node pkg="pose_listener" type="pose_listener"
+        name="pose_listener_after_upd" clear_params="true" output="log" required="true" if="$(eval save_to_file)">
+    <param name="type" value="PCS"/>
+    <param name="topic" value="/msf_core/pose_after_update"/>
+    <param name="output_file" value="$(arg msf_pose_after_upd_output_file)"/>
+  </node>
+
+  <node pkg="pose_listener" type="pose_listener"
+        name="pose_listener_vo" clear_params="true" output="log" required="true" if="$(eval save_to_file)">
+    <param name="type" value="$(arg vo_type)"/>
+    <param name="topic" value="$(arg vo_topic)"/>
+    <param name="output_file" value="$(arg vo_output_file)"/>
+  </node>
+
+
+  <node pkg="rosbag" type="play" name="rosbag_play" output="screen" required="true" args="--clock -d 5 $(arg bagfile)"/>
+
+</launch>
+
