@@ -1,17 +1,12 @@
 ethzasl_msf
 =====================
+**ORIGINAL README**: see [Original README](README.orig.md)
 
-## Description
-Time delay compensated single and multi sensor fusion framework based on an EKF.
-Please see the wiki for more information: https://github.com/ethz-asl/ethzasl_msf/wiki
+The Ethzasl MSF Framework stack is a multi-sensor fusion (msf) framework based on an Extended Kalman Filter (EKF). Multi sensor refers to one or more update sensors and the IMU as a fixed prediction sensor. The framework is essentially divided into the two EKF steps prediction and update. The prediction is made based on the system model (i.e. differential equations) and IMU readings. 
 
-## Documentation
-The API is documented here: http://ethz-asl.github.io/ethzasl_msf
+## Run VIO/VI-SLAM System as pose sensor
+The following command will run MSF with ORB-SLAM3 as a pose sensor:
+```
+./run_msf_rosbag.sh -c config/orbslam3_euroc.launch -r <EUROC_ROSBAG_PATH>
+```
 
-## Contributing
-You are welcome contributing to the package by opening a pull-request:
-Please make yourself familiar with the Google c++ style guide: 
-http://google-styleguide.googlecode.com/svn/trunk/cppguide.xml
-
-## License
-The source code is released under the Apache 2.0 license
