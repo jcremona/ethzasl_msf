@@ -10,3 +10,6 @@ The following command will run MSF with ORB-SLAM3 as a pose sensor:
 ./run_msf_rosbag.sh -c config/orbslam3_euroc.launch -r <EUROC_ROSBAG_PATH>
 ```
 
+## TODO
+* VO_OUTPUT_TOPIC should be set in only one place. Use `vio_gps_rosario.launch` instead of individual files.
+Modify `docker_run.sh` and `config/*` files properly.
